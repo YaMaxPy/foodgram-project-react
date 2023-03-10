@@ -1,4 +1,4 @@
-name: Django-app workflow
+name: Foodgram-app workflow
 
 on: [push]
 
@@ -17,17 +17,11 @@ jobs:
       run: | 
         python -m pip install --upgrade pip 
         pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
-        pip install -r ./api_yamdb/requirements.txt 
+        pip install -r ./backend/requirements.txt 
 
     - name: Test with flake8 and django tests
       run: |
         python -m flake8
-        cd api_yamdb/
-        python manage.py test
-
-    - name: Pytest
-      run: |
-        pytest
 
   build_and_push_to_docker_hub:
       name: Push Docker image to Docker Hub
@@ -47,8 +41,8 @@ jobs:
           uses: docker/build-push-action@v2 
           with:
             push: true
-            context: ./api_yamdb/
-            tags: ${{ secrets.DOCKER_USERNAME }}/api_yamdb-web:latest 
+            context: ./backend/
+            tags: ${{ secrets.DOCKER_USERNAME }}/foodgram-backend:latest 
   
   deploy:
     runs-on: ubuntu-latest
@@ -64,7 +58,7 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
           sudo docker compose stop
-          sudo docker compose rm web
+          sudo docker compose rm backend
           touch .env
           echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
           echo DB_NAME=${{ secrets.DB_NAME }} >> .env
@@ -72,7 +66,11 @@ jobs:
           echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
           echo DB_HOST=${{ secrets.DB_HOST }} >> .env
           echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-          sudo docker compose up -d 
+          sudo docker-compose up -d
+          sudo docker-compose exec backend python manage.py makemigrations
+          sudo docker-compose exec backend python manage.py migrate
+          sudo docker-compose exec backend python manage.py collectstatic --no-input
+          sudo docker-compose exec backend python manage.py load_data --paths data/ingredients.csv --models Ingredient
   
   send_message:
     runs-on: ubuntu-latest
