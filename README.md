@@ -1,4 +1,4 @@
-![yamdb_workflow](https://github.com/YaMaxPy/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg)
+![foodgram_workflow](https://github.com/YaMaxPy/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
 # Проект «YaMDb»
 ### Описание
 Проект YaMDb собирает отзывы (Review) пользователей на произведения (Title).
