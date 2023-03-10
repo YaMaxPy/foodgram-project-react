@@ -1,5 +1,5 @@
 ![foodgram_workflow](https://github.com/YaMaxPy/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
-# Проект «YaMDb»
+# Проект «Foodgram»
 ### Описание
 Проект YaMDb собирает отзывы (Review) пользователей на произведения (Title).
 Сами произведения в YaMDb не хранятся, здесь нельзя посмотреть фильм или послушать музыку.
