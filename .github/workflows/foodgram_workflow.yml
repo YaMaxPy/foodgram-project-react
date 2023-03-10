@@ -42,6 +42,7 @@ jobs:
           with:
             push: true
             context: ./backend/
+            file: ./backend/Dockerfile
             tags: ${{ secrets.DOCKER_USERNAME }}/foodgram-backend:latest 
 
   build_and_push_frontend_to_docker_hub:
@@ -63,6 +64,7 @@ jobs:
           with:
             push: true
             context: ./frontend/
+            file: ./frontend/Dockerfile
             tags: ${{ secrets.DOCKER_USERNAME }}/foodgram-frontend:latest 
 
   deploy:
