@@ -1,7 +1,7 @@
 ![foodgram_workflow](https://github.com/YaMaxPy/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
 # Проект «Foodgram»
 ### Описание
-
+На этом сервисе пользователи могут публиковать рецепты, подписываться на публикации других пользователей, добавлять понравившиеся рецепты в список «Избранное», а перед походом в магазин скачивать сводный список продуктов, необходимых для приготовления одного или нескольких выбранных блюд.
 
 ### Ресурсы API Foodgram
 - Ресурс auth: аутентификация.
@@ -36,10 +36,10 @@ DB_PORT=5432 # порт для подключения к БД
 
 Клонировать репозиторий и перейти в него в командной строке:
 ```
-git clone git@github.com:YaMaxPy/yamdb_final.git
+git clone git@github.com:YaMaxPy/foodgram-project-react.git
 ```
 ```
-cd yamdb_final
+cd foodgram-project-react
 ```
 Cоздать и активировать виртуальное окружение:
 ```
@@ -53,7 +53,7 @@ source venv/Scripts/activate
 python -m pip install --upgrade pip
 ```
 ```
-cd api_yamdb
+cd backend
 ```
 ```
 pip install -r requirements.txt
@@ -66,6 +66,7 @@ docker compose up -d --build
 ```
 После успешного запуска контейнеров выполнить миграции:
 ```
+docker compose exec backend python manage.py makemigrations
 docker compose exec web python manage.py migrate
 ```
 Создать суперюзера:
@@ -82,13 +83,13 @@ docker compose exec web python manage.py collectstatic --no-input
 ```
 docker cp fixtures.json infra_web_1:/app/fixtures.json
 ```
-Заполнить базу данных из файла с дампом:
+Заполнить базу данных из csv файла с данными:
 ```
-docker compose exec web python manage.py loaddata fixtures.json
+docker compose exec backend python manage.py load_data --paths data/ingredients.csv --models Ingredient
 ```
 
 ### Технологии
-Python 3.7.9, Django 3.2, Django REST Framework 3.12.4, Simple JWT 4.7.2, Docker, PostgreSQL, nginx, gunicorn.
+Python 3.7.9, Django 3.2, Django REST Framework 3.12.4, Docker, PostgreSQL, nginx, gunicorn.
 
 ### Авторы проекта
 Максим Радченко - https://github.com/YaMaxPy
