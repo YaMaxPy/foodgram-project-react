@@ -20,7 +20,7 @@
 - В результате пользователь получает токен и может работать с API проекта, отправляя этот токен с каждым запросом. 
 - После регистрации и получения токена пользователь может отправить PATCH-запрос на эндпоинт /api/v1/users/me/ и заполнить поля в своём профайле (описание полей — в документации).
 
-### Настройка приложение для работы с базой данных Postgres
+### Настройка приложения для работы с базой данных Postgres
 Для подключения и выполненя запросов к базе данных необходимо создать и заполнить файл '.env' с переменными окружения в папке './infra/'.
 
 Шаблон для заполнения файла '.env':
@@ -67,18 +67,18 @@ docker compose up -d --build
 После успешного запуска контейнеров выполнить миграции:
 ```
 docker compose exec backend python manage.py makemigrations
-docker compose exec web python manage.py migrate
+```
+```
+docker compose exec backend python manage.py migrate
 ```
 Создать суперюзера:
 ```
-docker compose exec web python manage.py createsuperuser
+docker compose exec backend python manage.py createsuperuser
 ```
 Собрать статику:
 ```
-docker compose exec web python manage.py collectstatic --no-input
+docker compose exec backend python manage.py collectstatic --no-input
 ```
-
-### Заполнение базы данных:
 Заполнить базу данных из csv файла с данными:
 ```
 docker compose exec backend python manage.py load_data --paths data/ingredients.csv --models Ingredient
