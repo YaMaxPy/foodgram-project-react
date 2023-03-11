@@ -25,7 +25,7 @@ services:
     image: radchenkomaxxsim/foodgram-frontend:latest
     # build: ../frontend
     volumes:
-      - ./frontend/:/app/result_build/
+      - ../frontend/:/app/result_build/
 
   nginx:
     image: nginx:1.21.3-alpine
@@ -34,8 +34,8 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/
-      - ./frontend/build:/usr/share/nginx/html/
-      - ./docs/:/usr/share/nginx/html/api/docs/
+      - ../frontend/build:/usr/share/nginx/html/
+      - ../docs/:/usr/share/nginx/html/api/docs/
       - static_value:/app/static/
       - media_value:/app/media/
     depends_on:
