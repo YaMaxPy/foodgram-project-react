@@ -79,10 +79,6 @@ docker compose exec web python manage.py collectstatic --no-input
 ```
 
 ### Заполнение базы данных:
-Скопировать файл с дампом базы данных из папки "./infra/" в контейнер:
-```
-docker cp fixtures.json infra_web_1:/app/fixtures.json
-```
 Заполнить базу данных из csv файла с данными:
 ```
 docker compose exec backend python manage.py load_data --paths data/ingredients.csv --models Ingredient
