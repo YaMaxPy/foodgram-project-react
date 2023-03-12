@@ -53,7 +53,7 @@ class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
         tags = self.request.query_params.getlist('tags')
         if tags:
             queryset = queryset.filter_by_tags(tags)
-        queryset = queryset.add_user_annotations(user.pk)
+        queryset = queryset.add_user_annotations(self.request.user.pk)
         if self.request.query_params.get('is_favorited'):
             queryset = queryset.filter(is_favorited=True)
         if self.request.query_params.get('is_in_shopping_cart'):
