@@ -135,6 +135,21 @@ class RecipeSerializer(serializers.ModelSerializer):
             raise ValidationError('Недостаточно данных.')
         tags_exist_validator(tags_ids, Tag)
         ingredients = ingredients_exist_validator(ingredients, Ingredient)
+        ingredients_list = []
+        for ingredient in ingredients:
+            ingredient_id = ingredient['id']
+            if ingredient_id in ingredients_list:
+                raise serializers.ValidationError({
+                    'ingredients': 'Ингредиенты должны быть уникальными!'
+                })
+            ingredients_list.append(ingredient_id)
+        tags_list = []
+        for tag in tags_ids:
+            if tag in tags_list:
+                raise serializers.ValidationError({
+                    'tags': 'Тэги должны быть уникальными!'
+                })
+            tags_list.append(tag)
         data.update({
             'tags': tags_ids,
             'ingredients': ingredients,

@@ -49,26 +49,18 @@ class RecipeViewSet(viewsets.ModelViewSet, AddDelViewMixin):
     add_serializer = ShortRecipeSerializer
 
     def get_queryset(self):
-        queryset = self.queryset
+        queryset = Recipe.objects
         tags = self.request.query_params.getlist('tags')
         if tags:
-            queryset = queryset.filter(
-                tags__slug__in=tags).distinct()
-        author = self.request.query_params.get('author')
+            queryset = queryset.filter_by_tags(tags)
+        queryset = queryset.add_user_annotations(user.pk)
+        if self.request.query_params.get('is_favorited'):
+            queryset = queryset.filter(is_favorited=True)
+        if self.request.query_params.get('is_in_shopping_cart'):
+            queryset = queryset.filter(in_shopping_cart=True)
+        author = self.request.query_params.get('author', None)
         if author:
             queryset = queryset.filter(author=author)
-        if self.request.user.is_anonymous:
-            return queryset
-        is_in_cart = self.request.query_params.get('is_in_shopping_cart')
-        if is_in_cart in ('1', 'true'):
-            queryset = queryset.filter(shopping_carts__user=self.request.user)
-        elif is_in_cart in ('0', 'false'):
-            queryset = queryset.exclude(shopping_carts__user=self.request.user)
-        is_favorite = self.request.query_params.get('is_favorited')
-        if is_favorite in ('1', 'true'):
-            queryset = queryset.filter(favorites__user=self.request.user)
-        if is_favorite in ('0', 'false'):
-            queryset = queryset.exclude(favorites__user=self.request.user)
         return queryset
 
     @action(methods=['GET', 'POST', 'DELETE'],
